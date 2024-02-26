@@ -257,6 +257,7 @@ if __name__ == "__main__":
             scenes = ['S005','S008','S013','S017']
 
     # test
+    # SECTION: SAMPLING
     threshold = [([1,5000,10000,15000],0.9), #OK
              ([1,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,11000,12000,13000,14000,15000],0.92), #OK
              ([1,2500,5000,7500,10000,15000],0.96), #OK
@@ -272,7 +273,7 @@ if __name__ == "__main__":
     logger.info('threshold = {}'.format(threshold))
     
     for scene in scenes:
-        
+        # SECTION 3.2: Anchor-Guided Clustering
         anchors = get_anchor(scene,dataset,threshold,nms_thres)
         people = get_people(scene,dataset,threshold)
         logger.info('number of anchors {}'.format(len(anchors)))
@@ -284,6 +285,7 @@ if __name__ == "__main__":
         cams = os.listdir(os.path.join(scene_path,scene))
         cams = sorted([cam for cam in cams if not cam.endswith('png')])
         
+        # SECTION 3.2: Tracks with Global ID from different camera angles
         for cam in cams:
        
             logger.info('processing scene {} cam {}'.format(scene,cam))

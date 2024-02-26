@@ -129,9 +129,10 @@ def id_reassignment(tracks_list, dis_thr=200, conf_thr=0.7, try_second_nearest=T
                     #     reassign_outliers.append((cam[i], tid, fid, loc[i]))
                     #     case2_cnt += 1
                 # this condition is to prevent the case that all the location are outlier
-                if len(delete_index) != len(coord):
+                if len(delete_index) != len(coord) and len(delete_index) > 0:
                     # remove the outlier before calculating the average wc location
-                    loc_list = np.delete(loc_list, delete_index, axis=0)
+                    delete_index_set = set(delete_index)
+                    loc_list = [item for idx, item in enumerate(loc_list) if idx not in delete_index_set]
             # check corner cases
             if np.sum(np.array([cam_weight[_loc[0]] for _loc in loc_list])) < 1:
                 print(np.sum(np.array([cam_weight[_loc[0]] for _loc in loc_list])))
@@ -283,7 +284,7 @@ def main():
     # ]
 
     tracks_list = {
-        _track_file.split('_')[-1][:-4]: load_tracking(_track_file, enable_feet=True) for _track_file in
+        _track_file.split('_')[-1][:-4]: load_tracking(_track_file, enable_feet=False) for _track_file in
         tracks_file_list
     }
 

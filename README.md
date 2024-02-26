@@ -157,7 +157,7 @@ python STCRA/run_stcra.py <input_tracking_file_folder> <output_tracking_file_fol
 5. Generate final submission
 ```
 cd ../BoT-SORT
-python tools/aic_interpolation.py <root_path>
-python tools/boundaryrect_removal.py <root_path>
-python tools/generate_submission.py <root_path>
+python tools/aic_interpolation.py /home/username/AIC23_Track1_UWIPL_ETRI/data
+python tools/boundaryrect_removal.py /home/username/AIC23_Track1_UWIPL_ETRI/data
+python tools/generate_submission.py /home/username/AIC23_Track1_UWIPL_ETRI/data
 ```

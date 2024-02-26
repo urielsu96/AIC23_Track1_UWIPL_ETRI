@@ -6,7 +6,7 @@ import glob
 
 sys.path.append('.')
 
-file_path = '/home/hsiangwei/Desktop/AICITY2023/data'
+file_path = sys.argv[0]
 
 def make_parser():
     parser = argparse.ArgumentParser("Interpolation!")
@@ -118,12 +118,7 @@ if __name__ == '__main__':
     
     scene_path =  os.path.join(file_path,dataset)
     
-    demo_synthetic_only = True
-    
-    if demo_synthetic_only:
-        scenes = sorted([scene for scene in os.listdir(scene_path) if scene != 'S001'])
-    else:
-        scenes = sorted(os.listdir(scene_path))
+    scenes = sorted([scene for scene in os.listdir(scene_path) if scene == 'S001'])
 
     mkdir_if_missing(os.path.join(file_path,'final_n=15_dist200'))
                 
@@ -136,6 +131,6 @@ if __name__ == '__main__':
         
         for cam in cams:
 
-            input_path = os.path.join(file_path,'hungarian_cluster','{}_{}.txt'.format(scene,cam))
+            input_path = os.path.join(file_path,'hungarian_cluster_S001','{}_{}.txt'.format(scene,cam))
             output_path = os.path.join(file_path,'final_n=15_dist200','{}_{}.txt'.format(scene,cam))
             dti(input_path, output_path, n_min=args.n_min, n_dti=args.n_dti, distance_thres=args.distance_thres)

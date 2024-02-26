@@ -8,7 +8,7 @@ import collections
 
 def make_parser():
     parser = argparse.ArgumentParser("generate submission")
-    parser.add_argument("root_path", default="/home/hsiangwei/Desktop/AICITY2023/data", type=str)
+    parser.add_argument("root_path", type=str)
     return parser
 
 args = make_parser().parse_args()
@@ -19,12 +19,12 @@ results = []
 
 dataset = 'test'
 synthetic = os.path.join(root_path,'final_n=15_dist200_pk_filter_margin_2')
-real = os.path.join(root_path,'0324_new_offset_fixed_reassignment_iteratively_250_65_200_70_150_75_interpolation')
+real = os.path.join(root_path,'final_n=15_dist200_pk_filter_margin_2')
 
 seqs_syn = sorted([seq for seq in os.listdir(synthetic) if seq.endswith('.txt')])
 seqs_real = sorted([seq for seq in os.listdir(real) if seq.endswith('.txt')])
 
-scenes = ['S001','S003','S009','S014','S018','S021','S022']
+scenes = ['S001']#,'S003','S009','S014','S018','S021','S022']
 
 print('generating submission file for {} set'.format(dataset))
 
@@ -35,7 +35,7 @@ seq_ids=set()
 
 for seq in seqs_real:
     
-    ids = collections.defaultdict(list)    
+    ids = collections.defaultdict(list)
     seq = seq.replace('.txt','')
     scene,cam = seq.split('_')
     scene_id = int(scene[1:])
@@ -65,41 +65,41 @@ for seq in seqs_real:
     print('total detections {}'.format(len(sct)))
     print('==========================')
 
-for seq in seqs_syn:
+# for seq in seqs_syn:
     
-    ids = collections.defaultdict(list)    
-    seq = seq.replace('.txt','')
-    scene,cam = seq.split('_')
-    scene_id = int(scene[1:])
-    sct = np.genfromtxt(os.path.join(synthetic,seq+'.txt'), delimiter=',', dtype=None)
+#     ids = collections.defaultdict(list)
+#     seq = seq.replace('.txt','')
+#     scene,cam = seq.split('_')
+#     scene_id = int(scene[1:])
+#     sct = np.genfromtxt(os.path.join(synthetic,seq+'.txt'), delimiter=',', dtype=None)
         
-    print('processing scene {} cam {}'.format(scene,cam))
+#     print('processing scene {} cam {}'.format(scene,cam))
     
-    if scene not in scene_set:
-        scene_set.add(scene)
-        seq_ids=set()
+#     if scene not in scene_set:
+#         scene_set.add(scene)
+#         seq_ids=set()
     
-    if scene not in scenes:
-        continue
+#     if scene not in scenes:
+#         continue
     
-    cams.add(cam)
+#     cams.add(cam)
     
-    cam = int(cam[1:])
+#     cam = int(cam[1:])
 
-    print('start {} end {}'.format(sct[0][0],sct[-1][0]))
+#     print('start {} end {}'.format(sct[0][0],sct[-1][0]))
     
-    for frame_id,trk_id,x,y,w,h,_,_,_,_ in sct:
-        global_id = scene_id*1000+trk_id
-        seq_ids.add(global_id)
-        results.append(
-                        f"{cam},{global_id},{frame_id},{int(x)},{int(y)},{int(w)},{int(h)},-1,-1\n"
-                    )
+#     for frame_id,trk_id,x,y,w,h,_,_,_,_ in sct:
+#         global_id = scene_id*1000+trk_id
+#         seq_ids.add(global_id)
+#         results.append(
+#                         f"{cam},{global_id},{frame_id},{int(x)},{int(y)},{int(w)},{int(h)},-1,-1\n"
+#                     )
      
-    print('scene {} cam {} id_set:{}'.format(scene,cam,seq_ids))
-    print('total detections {}'.format(len(sct)))
-    print('==========================')
+#     print('scene {} cam {} id_set:{}'.format(scene,cam,seq_ids))
+#     print('total detections {}'.format(len(sct)))
+#     print('==========================')
 
-assert len(cams) == 43
+# assert len(cams) == 43
 
 with open(output_path, 'w') as f:
     f.writelines(results)    

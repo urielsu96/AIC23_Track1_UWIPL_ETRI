@@ -59,7 +59,7 @@ if __name__ == "__main__":
         extractor = FeatureExtractor(
             model_name=model_name,
             model_path=model_p,
-            device='cuda'
+            device='cpu'
         )   
 
         scene = 'S001'
@@ -77,17 +77,18 @@ if __name__ == "__main__":
                 print('processing time :',end-start)
                 start = time.time()
                 print('process {}/{}'.format(idx,len(dets)))
+            print(cur_frame, int(frame))
             
             if cur_frame != int(frame):
                 cur_frame = int(frame)
                 img_path = os.path.join(img_dir,scene,cam,'frame',frame.zfill(5)+'.jpg')
                 img = Image.open(img_path)
         
-            img_crop = img.crop((x1,y1,x2,y2))
-            img_crop = val_transforms(img_crop.convert('RGB')).unsqueeze(0)
-            feature = extractor(img_crop).cpu().detach().numpy()[0]
-    
-            # feature = feature/np.linalg.norm(feature)
-            emb[idx] = feature
+                img_crop = img.crop((x1,y1,x2,y2))
+                img_crop = val_transforms(img_crop.convert('RGB')).unsqueeze(0)
+                feature = extractor(img_crop).cpu().detach().numpy()[0]
+
+                # feature = feature/np.linalg.norm(feature)
+                emb[idx] = feature
             
         np.save(out_path,emb)

@@ -213,11 +213,7 @@ def main():
                      'c006':0.9,
                      'c007':0.8}
     
-    if demo_synthetic_only:
-        scenes = [scene for scene in os.listdir(scene_path) if scene != 'S001']
-    else:
-        scenes = os.listdir(scene_path)
-    
+    scenes = [scene for scene in os.listdir(scene_path) if scene == 'S001']
     scenes.sort()
         
     for scene in scenes:

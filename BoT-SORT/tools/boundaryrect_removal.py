@@ -11,7 +11,7 @@ sys.path.append('.')
 
 def make_parser():
     parser = argparse.ArgumentParser("bbox removal")
-    parser.add_argument("root_path", default="/home/hsiangwei/Desktop/AICITY2023/data", type=str)
+    parser.add_argument("root_path", type=str)
     return parser
 
 def validate1(left, right, top, bottom, margin):
